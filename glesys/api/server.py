@@ -107,7 +107,22 @@ class Server(pydantic.BaseModel):
 
 		data = get_request(f"{self.base_endpoint}/costs?serverid={server_info['serverid']}")
 
-		print(data)
-
 		if data.get('response', {}).get('status', {}).get('code') == 200:
 			return data.get('response', {}).get('costs', {})
+
+	def estimatedcost(self, server):
+		"""
+		This API endpoint takes an existing serverid or
+		a server spec and convert that to an estimated cost.
+		"""
+
+		return {} # Returns 400 Bad Request currently
+
+		server_info = self._fuzzy_find(server)
+
+		data = post_request(f"{self.base_endpoint}/estimatedcost", {'serverid' : server_info['serverid']})
+
+		if data.get('response', {}).get('status', {}).get('code') == 200:
+			return data.get('response', {}).get('estimatedcost', {})
+
+	

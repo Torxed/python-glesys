@@ -58,6 +58,13 @@ parser_server.add_argument(
 	type=str,
 	help="Prints the costs of a given server (takes server_id or hostname/name)",
 )
+parser_server.add_argument(
+	"--est-costs",
+	required=False,
+	default=None,
+	type=str,
+	help="Prints the estimated costs of a given server (takes server_id or hostname/name)",
+)
 
 
 parser_server.add_argument(
