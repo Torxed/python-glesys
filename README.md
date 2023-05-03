@@ -8,8 +8,7 @@ It's also a CLI tool to access a subset of all those features as well as housing
 # Installation
 
 ```
-$ python -m build .
-$ sudo python -m installer dist/*.whl
+$ pip install glesys
 ```
 
 # Usage
