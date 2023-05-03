@@ -2,7 +2,7 @@ from .cli.args_router import loaded
 from .cli.args import load_arguments
 
 session = None
-__version__ = "0.1"
+__version__ = "0.2"
 
 def run_as_a_module():
 	# global session
