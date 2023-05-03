@@ -37,6 +37,13 @@ parser_server.add_argument(
 	type=str,
 	help="Prints the network adapters of a given server (takes server_id or hostname/name)",
 )
+parser_server.add_argument(
+	"--status",
+	required=False,
+	default=None,
+	type=str,
+	help="Prints the network adapters of a given server (takes server_id or hostname/name)",
+)
 
 
 parser_server.add_argument(
