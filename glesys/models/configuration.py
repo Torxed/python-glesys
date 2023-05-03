@@ -7,7 +7,7 @@ class Credentials(BaseModel):
 	key :str
 
 class Network(BaseModel):
-	host :str = "https://api.glesys.com/"
+	host :str = "https://api.glesys.com"
 
 class Configuration(BaseModel):
 	credentials :Credentials
