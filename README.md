@@ -1,7 +1,9 @@
 # glesys
 
-A Python library to interact with the Glesys.com API endpoints.<br>
+A Python library to interact with the [Glesys.com API](https://github.com/glesys/API) endpoints.<br>
 It's also a CLI tool to access a subset of all those features as well as housing a LetsEncrypt  [certbot](https://github.com/certbot/certbot) Authenticator plugin.
+
+*Small Disclaimer: I have no affiliation with Glesys, I just appreciate their API and services*
 
 # Installation
 
