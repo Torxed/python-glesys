@@ -2,6 +2,7 @@ import pydantic
 
 from .dns import DNS
 from .server import Server
+from .ip import IP
 
 
 class API(pydantic.BaseModel):
@@ -17,3 +18,4 @@ class API(pydantic.BaseModel):
 
 	dns :DNS = DNS()
 	server :Server = Server()
+	ip :IP = IP()
