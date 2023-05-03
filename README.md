@@ -67,7 +67,7 @@ As of 2023-05-03 [API Doc Spec](https://github.com/GleSYS/API/wiki/API-Documenta
 
  * [x] https://api.glesys.com/server/list
  * [x] https://api.glesys.com/server/details
- * [ ] https://api.glesys.com/server/networkadapters
+ * [x] https://api.glesys.com/server/networkadapters
  * [ ] https://api.glesys.com/server/backup
  * [ ] https://api.glesys.com/server/status
  * [ ] https://api.glesys.com/server/reboot

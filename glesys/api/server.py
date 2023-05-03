@@ -63,3 +63,21 @@ class Server(pydantic.BaseModel):
 
 		if data.get('response', {}).get('status', {}).get('code') == 200:
 			return data.get('response', {}).get('server', {})
+
+	def networkadapters(self, server):
+		from ..session import configuration
+
+		# Yepp, some of this code can be consolidated later on as it's a bit repetitive.
+
+		if not (server_info := list(self.find(hostname=server, server_id=server))):
+			raise ValueError(f"Could not find server with name={server} or server_id={name}")
+
+		if len(server_info) > 1:
+			raise ValueError(f"Multiple servers found with the name/server_id of {server}")
+		else:
+			server_info = server_info[0]
+
+		data = get_request(f"{self.base_endpoint}/networkadapters?serverid={server_info['serverid']}")
+
+		if data.get('response', {}).get('status', {}).get('code') == 200:
+			return data.get('response', {}).get('networkadapters', {})
