@@ -1,6 +1,7 @@
 import pydantic
 import json
 import logging
+import urllib.error
 
 from ..output import log
 from ..helpers import post_request, get_request
@@ -8,6 +9,17 @@ from ..helpers import post_request, get_request
 
 class Server(pydantic.BaseModel):
 	base_endpoint = "/server"
+
+	def _fuzzy_find(self, server):
+		if not (server_info := list(self.find(hostname=server, server_id=server))):
+			raise ValueError(f"Could not find server with name={server} or server_id={name}")
+
+		if len(server_info) > 1:
+			raise ValueError(f"Multiple servers found with the name/server_id of {server}")
+		else:
+			server_info = server_info[0]
+
+		return server_info
 
 	def list(self):
 		from ..session import configuration
@@ -49,15 +61,7 @@ class Server(pydantic.BaseModel):
 					break
 
 	def details(self, server):
-		from ..session import configuration
-
-		if not (server_info := list(self.find(hostname=server, server_id=server))):
-			raise ValueError(f"Could not find server with name={server} or server_id={name}")
-
-		if len(server_info) > 1:
-			raise ValueError(f"Multiple servers found with the name/server_id of {server}")
-		else:
-			server_info = server_info[0]
+		server_info = self._fuzzy_find(server)
 
 		data = get_request(f"{self.base_endpoint}/details?serverid={server_info['serverid']}")
 
@@ -65,17 +69,7 @@ class Server(pydantic.BaseModel):
 			return data.get('response', {}).get('server', {})
 
 	def networkadapters(self, server):
-		from ..session import configuration
-
-		# Yepp, some of this code can be consolidated later on as it's a bit repetitive.
-
-		if not (server_info := list(self.find(hostname=server, server_id=server))):
-			raise ValueError(f"Could not find server with name={server} or server_id={name}")
-
-		if len(server_info) > 1:
-			raise ValueError(f"Multiple servers found with the name/server_id of {server}")
-		else:
-			server_info = server_info[0]
+		server_info = self._fuzzy_find(server)
 
 		data = get_request(f"{self.base_endpoint}/networkadapters?serverid={server_info['serverid']}")
 
@@ -83,19 +77,27 @@ class Server(pydantic.BaseModel):
 			return data.get('response', {}).get('networkadapters', {})
 
 	def status(self, server):
-		from ..session import configuration
-
-		# Yepp, some of this code can be consolidated later on as it's a bit repetitive.
-
-		if not (server_info := list(self.find(hostname=server, server_id=server))):
-			raise ValueError(f"Could not find server with name={server} or server_id={name}")
-
-		if len(server_info) > 1:
-			raise ValueError(f"Multiple servers found with the name/server_id of {server}")
-		else:
-			server_info = server_info[0]
+		server_info = self._fuzzy_find(server)
 
 		data = get_request(f"{self.base_endpoint}/status?serverid={server_info['serverid']}")
 
 		if data.get('response', {}).get('status', {}).get('code') == 200:
 			return data.get('response', {}).get('server', {})
+
+	def limits(self, server):
+		server_info = self._fuzzy_find(server)
+
+		try:
+			data = get_request(f"{self.base_endpoint}/limits?serverid={server_info['serverid']}")
+		except urllib.error.HTTPError as error:
+			if error.status == 400:
+				data = json.loads(error.read().decode())
+			else:
+				raise error
+
+		if (status := data.get('response', {}).get('status', {}).get('code')) == 200:
+			return data.get('response', {}).get('server', {})
+		elif status == 400:
+			reason = data.get('response', {}).get('status', {}).get('text')
+			log(f"Could not get limits of this server: {reason}", fg="gray", level=logging.INFO)
+			return {}

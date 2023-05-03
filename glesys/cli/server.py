@@ -28,4 +28,6 @@ def server_entrypoint(args, **kwargs):
 		print(json.dumps(api.server.networkadapters(args.adapters), indent=4))
 	elif args.status:
 		print(json.dumps(api.server.status(args.status), indent=4))
+	elif args.limits:
+		print(json.dumps(api.server.limits(args.limits), indent=4))
 	
