@@ -63,8 +63,10 @@ $ sudo glesys lets-encrypt --individual --hostname '*.hvornum.se' --hostname 'hv
 
 # Supported API Endpoints
 
+As of 2023-05-03 [API Doc Spec](https://github.com/GleSYS/API/wiki/API-Documentation).
+
  * [x] https://api.glesys.com/server/list
- * [ ] https://api.glesys.com/server/details
+ * [x] https://api.glesys.com/server/details
  * [ ] https://api.glesys.com/server/networkadapters
  * [ ] https://api.glesys.com/server/backup
  * [ ] https://api.glesys.com/server/status
