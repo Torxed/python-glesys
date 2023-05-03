@@ -1,0 +1,6 @@
+[credentials]
+key = "key from https://cloud.glesys.com/#/api-access"
+user = "user@corp.lan"
+
+[network]
+url = "https://api.glesys.com/"
