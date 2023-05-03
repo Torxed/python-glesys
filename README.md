@@ -12,7 +12,7 @@ $ sudo python -m installer dist/*.whl
 
 # Usage
 
-:information: This assumes a valid `glesys.toml` configuration.
+:information_source: This assumes a valid `glesys.toml` configuration.
 
 ## List all domains
 
