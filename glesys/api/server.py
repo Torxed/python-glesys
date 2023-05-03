@@ -101,3 +101,13 @@ class Server(pydantic.BaseModel):
 			reason = data.get('response', {}).get('status', {}).get('text')
 			log(f"Could not get limits of this server: {reason}", fg="gray", level=logging.INFO)
 			return {}
+
+	def costs(self, server):
+		server_info = self._fuzzy_find(server)
+
+		data = get_request(f"{self.base_endpoint}/costs?serverid={server_info['serverid']}")
+
+		print(data)
+
+		if data.get('response', {}).get('status', {}).get('code') == 200:
+			return data.get('response', {}).get('costs', {})

@@ -42,14 +42,21 @@ parser_server.add_argument(
 	required=False,
 	default=None,
 	type=str,
-	help="Prints the network adapters of a given server (takes server_id or hostname/name)",
+	help="Prints the status of a given server (takes server_id or hostname/name)",
 )
 parser_server.add_argument(
 	"--limits",
 	required=False,
 	default=None,
 	type=str,
-	help="Prints the network adapters of a given server (takes server_id or hostname/name)",
+	help="Prints the OpenVZ limits of a given server (takes server_id or hostname/name)",
+)
+parser_server.add_argument(
+	"--costs",
+	required=False,
+	default=None,
+	type=str,
+	help="Prints the costs of a given server (takes server_id or hostname/name)",
 )
 
 

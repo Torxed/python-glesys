@@ -30,4 +30,6 @@ def server_entrypoint(args, **kwargs):
 		print(json.dumps(api.server.status(args.status), indent=4))
 	elif args.limits:
 		print(json.dumps(api.server.limits(args.limits), indent=4))
+	elif args.costs:
+		print(json.dumps(api.server.costs(args.costs), indent=4))
 	

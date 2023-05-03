@@ -81,7 +81,7 @@ As of 2023-05-03 [API Doc Spec](https://github.com/GleSYS/API/wiki/API-Documenta
  * [ ] https://api.glesys.com/server/destroy
  * [ ] https://api.glesys.com/server/edit
  * [ ] https://api.glesys.com/server/clone
- * [ ] https://api.glesys.com/server/limits
+ * [x] https://api.glesys.com/server/limits
  * [ ] https://api.glesys.com/server/resetlimit
  * [ ] https://api.glesys.com/server/listbackups
  * [ ] https://api.glesys.com/server/console
@@ -89,7 +89,7 @@ As of 2023-05-03 [API Doc Spec](https://github.com/GleSYS/API/wiki/API-Documenta
  * [ ] https://api.glesys.com/server/templates
  * [ ] https://api.glesys.com/server/allowedarguments
  * [ ] https://api.glesys.com/server/resourceusage
- * [ ] https://api.glesys.com/server/costs
+ * [x] https://api.glesys.com/server/costs
  * [ ] https://api.glesys.com/server/listiso
  * [ ] https://api.glesys.com/server/mountiso
  * [ ] https://api.glesys.com/server/estimatedcost
