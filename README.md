@@ -1,21 +1,34 @@
 # glesys
 
-This is a library to access all the Glesys API endpoints.<br>
-It's also a CLI tool to access a subset of all those features.
+A Python library to interact with the Glesys.com API endpoints.<br>
+It's also a CLI tool to access a subset of all those features as well as housing a LetsEncrypt  [certbot](https://github.com/certbot/certbot) Authenticator plugin.
+
+# Installation
+
+```
+$ python -m build .
+$ sudo python -m installer dist/*.whl
+```
 
 # Usage
 
-:information: This assumes a valid `glesys.toml` configuration or environment variables for `API_USER` and `API_SECRET`.
+:information: This assumes a valid `glesys.toml` configuration.
+
+## List all domains
+
+```
+$ glesys dns --all-domains
+```
 
 ## List all records for hvornum.se
 
 ```
-$ glesys dns --list-all hvornum.se
+$ glesys dns --all-records hvornum.se
 ```
 
 ## LetsEncrypt challenge
 
-:warning: This assumes you have installed this library locally on the machine running `certbot` utility as well as a credential storage in `/etc/glesys/glesys.toml`.
+:warning: This assumes you have installed this library locally on the machine before running the `certbot` utility. This is because `certbot` will use plugin-discovery via [Entry points for plugins](https://setuptools.pypa.io/en/latest/userguide/entry_point.html#entry-points-for-plugins). This also requires a valid `glesys.toml`.
 
 ### Single certificate for all domains
 
@@ -26,16 +39,22 @@ $ sudo glesys lets-encrypt --all-domains
 This will generate certificates for all domains hosted under the Glesys DNS server. This would be eqivilant of running certbot manually for `hvornum.se` and `archlinux.life`:
 
 ```
-certbot -v --dns-glesys-propagation-seconds 60 -v --text --agree-tos --email anton@hvornum.se --expand --renew-by-default --manual-auth-hook /tmp/exit.sh --server https://acme-staging-v02.api.letsencrypt.org/directory -d '*.hvornum.se' -d 'hvornum.se' -d '*.archlinux.life' -d 'archlinux.life' certonly
+certbot -v certonly --non-interactive --authenticator dns-glesys --preferred-challenges dns --dry-run --server https://acme-staging-v02.api.letsencrypt.org/directory --work-dir /home/anton/github/python-glesys/certbot --logs-dir /home/anton/github/python-glesys/certbot --config-dir /home/anton/github/python-glesys/certbot --text --agree-tos --email anton@hvornum.se --expand --renew-by-default -d '*.hvornum.se,hvornum.se,*.archlinux.life,archlinux.life'
 ```
 
+By default it will run against LetsEncrypt staging environment. Use `--production` to target `glesys lets-encrypt` against the production endpoint of LetsEncrypt and to remove the dryrun.
+
 ### Separate certificate for all domains
+
+TBD!
 
 ```
 $ sudo glesys lets-encrypt --all-domains --individual
 ```
 
 ### Separate certificate for selected domains
+
+TBD!
 
 ```
 $ sudo glesys lets-encrypt --individual --hostname '*.hvornum.se' --hostname 'hvornum.se'
