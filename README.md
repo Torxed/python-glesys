@@ -94,7 +94,7 @@ As of 2023-05-03 [API Doc Spec](https://github.com/GleSYS/API/wiki/API-Documenta
  * [ ] https://api.glesys.com/server/mountiso
  * [ ] https://api.glesys.com/server/estimatedcost
  * [ ] https://api.glesys.com/server/previewcloudconfig
- * [ ] https://api.glesys.com/ip/listfree
+ * [x] https://api.glesys.com/ip/listfree
  * [ ] https://api.glesys.com/ip/listown
  * [ ] https://api.glesys.com/ip/details
  * [ ] https://api.glesys.com/ip/take
