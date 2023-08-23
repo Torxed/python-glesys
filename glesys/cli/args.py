@@ -1,6 +1,6 @@
+import pathlib
 import argparse
 # https://towardsdatascience.com/dynamically-add-arguments-to-argparse-python-patterns-a439121abc39
-args = None
 
 parser = argparse.ArgumentParser("glesys")
 parser.add_argument(
@@ -10,11 +10,16 @@ parser.add_argument(
 	default=False,
 	help="Increase verbosity",
 )
+parser.add_argument(
+	"--conf",
+	required=False,
+	type=pathlib.Path,
+	default=pathlib.Path('/etc/glesys/glesys.toml'),
+	help="Which configuration file to use",
+)
 
 subparsers = parser.add_subparsers(help="Sub-commands help")
 
 def load_arguments():
-	global args
-
 	args, unknowns = parser.parse_known_args()
 	return args

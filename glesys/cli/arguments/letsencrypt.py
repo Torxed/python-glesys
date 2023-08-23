@@ -46,5 +46,12 @@ parser_letsencrypt.add_argument(
 	default=pathlib.Path('/etc/letsencrypt'),
 	help="The path of the certbot config directory",
 )
+parser_letsencrypt.add_argument(
+	"--no-ignores",
+	required=False,
+	action="store_true",
+	default=False,
+	help="Overrides attempt to ignore domains that is not 'under' glesys",
+)
 
 parser_letsencrypt.set_defaults(func=letsencrypt_entrypoint)

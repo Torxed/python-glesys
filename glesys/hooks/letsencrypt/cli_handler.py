@@ -4,7 +4,7 @@ import datetime
 import time
 
 from ...output import log, stylize_output
-from ...session import api, configuration
+from ...session import session
 from ...workers import SysCommandWorker
 
 def has_expired(date):
@@ -25,11 +25,11 @@ def letsencrypt_entrypoint(args, **kwargs):
 	if args.all_domains:
 		certbot_domain_string = ""
 
-		log(f"Fetching all domains at Glesys accessible by account {configuration.credentials.user}", fg="blue", level=logging.INFO)
+		log(f"Fetching all domains at Glesys accessible by account {session['configuration'].credentials.user}", fg="blue", level=logging.INFO)
 
 		debug_output_domains = 0
-		for domain in api.dns.all_domains():
-			if domain.get('usingglesysnameserver') == "no":
+		for domain in session['api'].dns.all_domains():
+			if domain.get('usingglesysnameserver') == "no" and args.no_ignores is False:
 				log(f"Ignoring domain {domain['domainname']} - not using Glesys nameserver", fg="gray", level=logging.INFO)
 				continue
 

@@ -10,9 +10,9 @@ from ..helpers import post_request, get_request
 
 class DNS(pydantic.BaseModel):
 	def all_domains(self):
-		from ..session import configuration
+		from ..session import session
 		
-		log(f"Listing all domains for user {configuration.credentials.user}", fg="gray", level=logging.DEBUG)
+		log(f"Listing all domains for user {session['configuration'].credentials.user}", fg="gray", level=logging.DEBUG)
 		data = get_request('/domain/list/')
 
 		if data.get('response', {}).get('status', {}).get('code') == 200:

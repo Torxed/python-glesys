@@ -13,7 +13,7 @@ from certbot import interfaces
 from certbot.plugins import dns_common
 
 from ...output import log
-from ...session import api
+from ...session import session
 
 @zope.interface.implementer(interfaces.IAuthenticator)
 @zope.interface.provider(interfaces.IPluginFactory)
@@ -38,7 +38,7 @@ class Authenticator(dns_common.DNSAuthenticator):
 			   'the Glesys API DNS endpoint.'
 
 	def _perform(self, domain, validation_name, validation):
-		api.dns.add_record(domain, {
+		session['api'].dns.add_record(domain, {
 			'host': validation_name,
 			'data': validation,
 			'type': 'TXT',
@@ -46,7 +46,7 @@ class Authenticator(dns_common.DNSAuthenticator):
 		})
 
 	def _cleanup(self, domain, validation_name, validation):
-		api.dns.delete_record(domain, {
+		session['api'].dns.delete_record(domain, {
 			'host': validation_name,
 			'data': validation,
 			'type': 'TXT',

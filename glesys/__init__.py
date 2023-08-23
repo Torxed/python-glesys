@@ -1,13 +1,23 @@
 from .cli.args_router import loaded
 from .cli.args import load_arguments
+from .configuration import load_configuration
+from .api import API
+from .session import session
 
-session = None
 __version__ = "0.2"
+
+def init_session():
+	session['args'] = load_arguments()
+	session['configuration'] = load_configuration()
+	session['api'] = API(
+		user=session['configuration'].credentials.user,
+		key=session['configuration'].credentials.key,
+		host=session['configuration'].network.host
+	)
 
 def run_as_a_module():
 	# global session
-
-	args = load_arguments()
+	init_session()
 	
 	# import importlib
 	# import sys
@@ -22,5 +32,8 @@ def run_as_a_module():
 	# else:
 	# 	import glesys.session
 	
-	if 'func' in dir(args):
-		args.func(args)
+	if 'func' in dir(session['args']):
+		session['args'].func(session['args'])
+
+if __name__ in ('__main__', 'glesys'):
+	init_session()
