@@ -1,10 +1,9 @@
-from .cli.args_router import loaded
 from .cli.args import load_arguments
 from .configuration import load_configuration
 from .api import API
 from .session import session
 
-__version__ = "0.2"
+__version__ = "0.3"
 
 def init_session():
 	session['args'] = load_arguments()

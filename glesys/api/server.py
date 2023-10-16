@@ -8,7 +8,7 @@ from ..helpers import post_request, get_request
 
 
 class Server(pydantic.BaseModel):
-	base_endpoint = "/server"
+	base_endpoint :str = "/server"
 
 	def _fuzzy_find(self, server):
 		if not (server_info := list(self.find(hostname=server, server_id=server))):
@@ -22,9 +22,9 @@ class Server(pydantic.BaseModel):
 		return server_info
 
 	def list(self):
-		from ..session import configuration
+		from ..session import session
 		
-		log(f"Listing all servers accessible by user {configuration.credentials.user}", fg="gray", level=logging.INFO)
+		log(f"Listing all servers accessible by user {session['configuration'].credentials.user}", fg="gray", level=logging.INFO)
 		data = get_request(f'{self.base_endpoint}/list')
 
 		if data.get('response', {}).get('status', {}).get('code') == 200:

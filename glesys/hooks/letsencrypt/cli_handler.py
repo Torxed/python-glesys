@@ -1,6 +1,7 @@
 import json
 import logging
 import datetime
+import pathlib
 import time
 
 from ...output import log, stylize_output
@@ -23,11 +24,16 @@ def has_expired(date):
 
 def letsencrypt_entrypoint(args, **kwargs):
 	if args.all_domains:
+		for path in ['/etc/letsencrypt/.certbot.lock', '/var/log/letsencrypt/.certbot.lock', '/var/lib/letsencrypt/.certbot.lock']:
+			if pathlib.Path(path).exists():
+				raise KeyError(f"Another instance of certbot is already running: {path}")
+
 		certbot_domain_string = ""
 
 		log(f"Fetching all domains at Glesys accessible by account {session['configuration'].credentials.user}", fg="blue", level=logging.INFO)
 
 		debug_output_domains = 0
+		domains = []
 		for domain in session['api'].dns.all_domains():
 			if domain.get('usingglesysnameserver') == "no" and args.no_ignores is False:
 				log(f"Ignoring domain {domain['domainname']} - not using Glesys nameserver", fg="gray", level=logging.INFO)
@@ -39,13 +45,17 @@ def letsencrypt_entrypoint(args, **kwargs):
 
 			certbot_domain_string += f"*.{domain['domainname']},{domain['domainname']},"
 			debug_output_domains += 1
+			domains.append(domain['domainname'])
 
 		log(f"Requesting new certificates using LetsEncrypt for {debug_output_domains} domains", fg="blue", level=logging.INFO)
-
+		if args.verbose:
+			log(f" ╷", fg="gray", level=logging.INFO)
+			for index, domain in enumerate(domains):
+				log(f" {'├' if index != len(domains)-1 else '└'}─ {domain}", fg="gray", level=logging.INFO)
 
 		certbot_cmd_string = "certbot certonly --non-interactive"
 		if args.verbose:
-			certbot_cmd_string += '--verbose'
+			certbot_cmd_string += ' --verbose'
 		certbot_cmd_string += " --authenticator dns-glesys"
 		certbot_cmd_string += " --preferred-challenges dns"
 		certbot_cmd_string += f" --work-dir {args.workdir.resolve()}"
@@ -64,8 +74,11 @@ def letsencrypt_entrypoint(args, **kwargs):
 		with open('/tmp/exit.sh', 'w') as fh:
 			fh.write('#!/bin/bash\nexit(0)\n')
 
+		if args.verbose:
+			log(f"Executing: {certbot_cmd_string}", fg="gray", level=logging.INFO)
+
 		# chmod +x /tmp/exit.sh
-		worker = SysCommandWorker(certbot_cmd_string, peek_output=True)
+		worker = SysCommandWorker(certbot_cmd_string, peek_output=args.verbose)
 
 		while worker.is_alive():
 			time.sleep(1)

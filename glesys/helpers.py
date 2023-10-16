@@ -18,7 +18,7 @@ def get_request(endpoint):
 
 
 def post_request(endpoint, payload):
-	from .session import configuration
+	from .session import session
 
 	credentials = base64.b64encode(f"{session['configuration'].credentials.user}:{session['configuration'].credentials.key}".encode())
 

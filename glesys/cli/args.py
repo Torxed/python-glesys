@@ -1,5 +1,8 @@
 import pathlib
 import argparse
+import logging
+import psutil
+import os
 # https://towardsdatascience.com/dynamically-add-arguments-to-argparse-python-patterns-a439121abc39
 
 parser = argparse.ArgumentParser("glesys")
@@ -18,8 +21,31 @@ parser.add_argument(
 	help="Which configuration file to use",
 )
 
-subparsers = parser.add_subparsers(help="Sub-commands help")
+subparsers = None
+args = None
 
 def load_arguments():
-	args, unknowns = parser.parse_known_args()
-	return args
+	# Detect if we're running interactively or not,
+	# if we're running via python we most likely via entrypoint.
+	if psutil.Process(os.getppid()).name() not in ["python", ]:
+		global subparsers
+
+		trigger_load = False
+		if not subparsers:
+			trigger_load = True
+			subparsers = parser.add_subparsers(help="Sub-commands help")
+
+		from ..output import log
+
+		log("Loading cli arguments", fg="gray", level=logging.DEBUG)
+		from .arguments.dns import parser_dns
+		from .arguments.letsencrypt import parser_letsencrypt
+		from .arguments.server import parser_server
+		from .arguments.ip import parser_ip
+
+		log("Processing arguments", fg="gray", level=logging.DEBUG)
+		if trigger_load:
+			global args
+			args, unknowns = parser.parse_known_args()
+
+		return args

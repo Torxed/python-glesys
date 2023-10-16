@@ -14,7 +14,7 @@ def load_configuration():
 
 	args = session['args']
 	conf_location = None
-	print(args)
+
 	if 'conf' in dir(args) and args.conf:
 		if args.conf.exists() is False:
 			raise PermissionError(f"Could not load --conf from {args.conf}, file does not exist or permission error.")

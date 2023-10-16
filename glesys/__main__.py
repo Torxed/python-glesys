@@ -6,6 +6,7 @@ import pathlib
 This logic is here to allow for relative imports via the .git repo,
 as well as installed versions as a backup.
 """
+
 if pathlib.Path('./glesys/__init__.py').absolute().exists():
 	spec = importlib.util.spec_from_file_location("glesys", "./glesys/__init__.py")
 	glesys = importlib.util.module_from_spec(spec)

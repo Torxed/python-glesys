@@ -8,7 +8,7 @@ from ..helpers import post_request, get_request
 
 
 class IP(pydantic.BaseModel):
-	base_endpoint = "/ip"
+	base_endpoint :str = "/ip"
 
 	def listfree(self):
 		from ..session import configuration
